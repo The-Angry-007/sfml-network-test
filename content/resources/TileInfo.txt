@@ -1,0 +1,9 @@
+Name|File|Is tile entity?
+Air|dirt.png|false
+Dirt|dirt.png|false
+Grass|grass.png|false
+Stone|stone.png|false
+Log|log.png|false
+TestTile|testTile.png|false
+Leaves|leaves.png|false
+Stockpile|stockpile.png|true
