@@ -25,7 +25,7 @@ void MainMenu::DisplayTitleScreen()
 	ImGui::Begin("MainMenu", nullptr, windowFlags);
 	if (inJoinMenu)
 	{
-		char buf[64] = "127.0.0.1";
+		static char buf[64] = "127.0.0.1";
 		ImGui::Text("Enter IP");
 		ImGui::InputText("##enter ip field", buf, sizeof(buf));
 
@@ -61,6 +61,7 @@ void MainMenu::DisplayTitleScreen()
 			Client* c = new Client(state->renderTarget,Player());
 			state = std::unique_ptr<Kosmic::State>(c);
 			sf::IpAddress ip = sf::IpAddress::getLocalAddress().value();
+			std::cout << "SERVER STARTED AT " << sf::IpAddress::getLocalAddress().value().toString();
 			c->ConnectToServer(ip,5000);
 		}
 		if (ImGui::Button("Join"))
