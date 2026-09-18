@@ -92,13 +92,4 @@ int InputState::getIndex(std::vector<T> &arr, T &item)
 
 void InputState::DrawToWindow()
 {
-	ImGui::SetNextWindowPos(ImVec2(685,7),ImGuiCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(227,186),ImGuiCond_Once);
-	ImGui::Begin("input");
-	nlohmann::json j;
-	j["mouse pos"] = {mousePosition.x, mousePosition.y};
-	j["keys down"] = keysDown;
-	j["mouse buttons down"] = mouseButtonsDown;
-	ImGui::Text(j.dump(1).c_str());
-	ImGui::End();
 }

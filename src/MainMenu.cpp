@@ -2,67 +2,61 @@
 #include "Main.hpp"
 #include "imgui/imgui.h"
 #include "State.hpp"
-	MainMenu::MainMenu()
+#include "Client.hpp"
+MainMenu::MainMenu()
+{
+}
+
+void MainMenu::DerivedUpdate()
+{
+	DisplayTitleScreen();
+}
+void MainMenu::DisplayTitleScreen()
+{
+	ImGuiIO &io = ImGui::GetIO();
+	ImVec2 displaySize = io.DisplaySize;
+
+	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(displaySize);
+
+	ImGui::Begin("MainMenu", nullptr, windowFlags);
+
+	if (ImGui::Button("Host"))
 	{
-		currentState = TITLE_SCREEN;
+		server = std::make_unique<Server>();
+		server->Start(5000);
+	}
+	if (ImGui::Button("Join"))
+	{
+		char buf[64] = "127.0.0.1";
+
+		ImGui::InputText("Enter IP", buf, sizeof(buf));
+
+		if (ImGui::Button("Connect"))
+		{
+			unsigned int a, b, c, d;
+
+			if (std::sscanf(buf, "%u.%u.%u.%u", &a, &b, &c, &d) == 4 &&
+				a <= 255 && b <= 255 && c <= 255 && d <= 255)
+			{
+				std::uint32_t ip =
+					(a << 24) |
+					(b << 16) |
+					(c << 8) |
+					d;
+
+				Client* c = new Client(state->renderTarget,Player());
+				c->socket.connect(sf::IpAddress(ip), 5000);
+				state = std::unique_ptr<Kosmic::State>(c);
+			}
+		}
 	}
 
-	void MainMenu::DerivedUpdate()
-	{
-		if (currentState == TITLE_SCREEN)
-		{
-			DisplayTitleScreen();
-		}
-		if (inputState.Pressed(sf::Keyboard::Key::Escape) && (currentState != TITLE_SCREEN))
-		{
-			currentState = TITLE_SCREEN;
-		}
-	}
-	void MainMenu::DisplayTitleScreen()
-	{
-		ImGuiIO &io = ImGui::GetIO();
-		ImVec2 displaySize = io.DisplaySize;
+	ImGui::End();
+}
 
-		ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-
-		ImGui::SetNextWindowPos(ImVec2(0, 0));
-		ImGui::SetNextWindowSize(displaySize);
-
-		ImGui::Begin("MainMenu", nullptr, windowFlags);
-
-		// Font scaling
-		float originalFontScale = ImGui::GetFont()->Scale;
-		ImGui::SetWindowFontScale(3.0f); // Double font size
-
-		const char *title = "Cosmic Construction II";
-		ImVec2 textSize = ImGui::CalcTextSize(title);
-		// ImGui::SetCursorPos(ImVec2((displaySize.x - textSize.x) * 0.5f, displaySize.y * 0.2f));
-		ImGui::TextUnformatted(title);
-
-		ImGui::SetWindowFontScale(1.0f); // Reset font scale
-
-		// Buttons
-		ImVec2 buttonSize(200, 50);
-		ImVec2 windowCenter = ImVec2(displaySize.x * 0.5f, displaySize.y * 0.5f);
-
-		// ImGui::SetCursorPos(ImVec2(windowCenter.x - buttonSize.x * 0.5f, windowCenter.y - buttonSize.y - 10));
-		if (ImGui::Button("New Game", buttonSize))
-		{
-			strcpy(saveName, "");
-			strcpy(seed, "");
-			currentState = NEW_GAME;
-		}
-
-		// ImGui::SetCursorPos(ImVec2(windowCenter.x - buttonSize.x * 0.5f, windowCenter.y + 10));
-		if (ImGui::Button("Load Game", buttonSize))
-		{
-		}
-
-		// ImGui::SetCursorPos(ImVec2(windowCenter.x - buttonSize.x * 0.5f, windowCenter.y + 20 + buttonSize.y));
-
-		ImGui::End();
-	}
-
-	MainMenu::~MainMenu()
-	{
-	}
+MainMenu::~MainMenu()
+{
+}

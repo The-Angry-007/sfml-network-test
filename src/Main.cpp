@@ -13,6 +13,7 @@ std::unique_ptr<sf::RenderWindow> window;
 int width = 1280;
 int height = 720;
 std::unique_ptr<Kosmic::State> state;
+std::unique_ptr<Server> server;
 
 // the main procedure that runs the program
 int main()
@@ -32,17 +33,9 @@ int main()
 	if (!ImGui::SFML::Init(*window))
 		return -1;
 	Input input;
-	// state = new Civitron::State();
 	state = std::unique_ptr<Kosmic::State>(new MainMenu());
 	state->renderTarget = window.get();
 	sf::Clock deltaClock;
-	// Civitron::ItemInfo::Init();
-	// ImGui::PushFont(NULL,2.f);
-	// ImGuiIO& io = ImGui::GetIO();
-
-	// io.Fonts->Clear();
-	// ImFontConfig config;
-	// config.SizePixels = 20.f;
 
 	// io.Fonts->AddFontDefault(&config);
 	auto &io = ImGui::GetIO();
@@ -63,10 +56,20 @@ int main()
 		double dt = time.asSeconds();
 		ImGui::SFML::Update(*window, time);
 		inputState.DrawToWindow();
-		state->Update(inputState, dt);
+		if (server.get() != nullptr)
+		{
+			server->Update();
+		}
+		if (state.get() != nullptr)
+		{
+			state->Update(inputState, dt);
+		}
 		window->clear(sf::Color(0, 0, 0));
 		// window->clear(sf::Color(8, 38, 19));
-		state->Render();
+		if (state.get() != nullptr)
+		{
+			state->Render();
+		}
 		ImGui::SFML::Render(*window);
 
 		window->display();
