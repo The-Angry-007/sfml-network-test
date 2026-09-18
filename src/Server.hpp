@@ -87,6 +87,7 @@ public:
         p.position = {rand() % 300, rand() % 300};
         packet << p.id << p.color.r << p.color.g << p.color.b;
         packet << p.position.x << p.position.y;
+        packet << players.size();
         for (auto &p : players)
         {
             packet << p.id << p.color.r << p.color.g << p.color.b;
