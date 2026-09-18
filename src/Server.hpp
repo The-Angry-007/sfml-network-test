@@ -53,11 +53,11 @@ public:
         {
             if (std::find(exclusions.begin(), exclusions.end(), client.id) == exclusions.end())
             {
-                if (client.id == ((Client*)state.get())->player.id)
-                {
-                    ((Client*)state.get())->ProcessPacket(packet);
-                    continue;
-                }
+                // if (client.id == ((Client*)state.get())->player.id)
+                // {
+                //     ((Client*)state.get())->ProcessPacket(packet);
+                //     continue;
+                // }
                 client.socket.send(packet);
             }
         }
@@ -89,7 +89,7 @@ public:
         addMsg->player = p;
         sf::Packet addPacket;
         addMsg->ToPacket(addPacket);
-        Broadcast(addPacket);
+        Broadcast(addPacket, {p.id});
         delete addMsg;
         packet << p.id << p.color.r << p.color.g << p.color.b;
         packet << p.position.x << p.position.y;
@@ -183,6 +183,7 @@ public:
             outgoing->playerId = senderID;
             outgoing->newPosition = msg2->newPosition;
             sf::Packet packet;
+            // packet << (uint8_t)CSMessageType::SET_PLAYER_POSITION;
             outgoing->ToPacket(packet);
             Broadcast(packet, {senderID});
             delete outgoing;

@@ -69,6 +69,7 @@ void Client::DerivedRender()
 
 void Client::ProcessPacket(sf::Packet &packet)
 {
+    std::cout << "received packet" << std::endl;
     uint8_t packetType;
     packet >> packetType;
     CSMessage *msg = CSMessageFromType((CSMessageType)packetType);
@@ -81,6 +82,7 @@ void Client::ProcessPacket(sf::Packet &packet)
             if (p.id == msg2->playerId)
             {
                 p.position = msg2->newPosition;
+                p.UpdateRect();
             }
         }
     }
@@ -99,6 +101,7 @@ void Client::ProcessPacket(sf::Packet &packet)
         }
     }else if (msg->type == CSMessageType::ADD_PLAYER)
     {
+        std::cout << "adding player" << std::endl;
         CSMessageAddPlayer* msg2 = (CSMessageAddPlayer*)msg;
         otherPlayers.push_back(std::move(msg2->player));
         otherPlayers.back().UpdateRect();

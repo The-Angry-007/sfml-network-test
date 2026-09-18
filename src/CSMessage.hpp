@@ -121,11 +121,13 @@ class CSMessageAddPlayer : public CSMessage
     Player player;
     void ToPacket(sf::Packet& packet)
     {
+        CSMessage::ToPacket(packet);
         packet << player.id << player.color.r << player.color.g << player.color.b;
         packet << player.position.x << player.position.y;
     }
     void FromPacket(sf::Packet& packet)
     {
+        CSMessage::FromPacket(packet);
         packet >> player.id >> player.color.r >> player.color.g >> player.color.b;
         packet >> player.position.x >> player.position.y;
     }
