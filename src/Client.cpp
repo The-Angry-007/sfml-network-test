@@ -11,6 +11,7 @@ Client::Client(sf::RenderTarget *target, Player player)
 
 void Client::DerivedUpdate()
 {
+    ReceivePackets();
     if (inputState.Down(sf::Keyboard::Key::S))
     {
         player.position += sf::Vector2f{0.f, speed * deltaTime};
