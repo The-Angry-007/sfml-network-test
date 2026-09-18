@@ -14,7 +14,7 @@ std::unique_ptr<sf::RenderWindow> window;
 int width = 1280;
 int height = 720;
 std::unique_ptr<Kosmic::State> state;
-std::unique_ptr<Server> server;
+std::unique_ptr<Server> server = std::unique_ptr<Server>(nullptr);
 
 // the main procedure that runs the program
 int main()

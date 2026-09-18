@@ -56,7 +56,7 @@ public:
                 if (client.id == ((Client*)state.get())->player.id)
                 {
                     ((Client*)state.get())->ProcessPacket(packet);
-                    continue;;
+                    continue;
                 }
                 client.socket.send(packet);
             }
@@ -73,9 +73,9 @@ public:
     sf::TcpListener listener;
     std::vector<ServerClient> clients;
     std::vector<Player> players = {};
+    uint64_t currId = 0;
     uint64_t GetNextPlayerId()
     {
-        static uint64_t currId = 0;
         return currId++;
     }
     // adds a player then bundles all the current game data into a packet
@@ -89,7 +89,7 @@ public:
         addMsg->player = p;
         sf::Packet addPacket;
         addMsg->ToPacket(addPacket);
-        Broadcast(addPacket,{p.id});
+        Broadcast(addPacket);
         delete addMsg;
         packet << p.id << p.color.r << p.color.g << p.color.b;
         packet << p.position.x << p.position.y;
@@ -124,7 +124,7 @@ public:
             packet << (uint8_t)CSMessageType::JOIN_DATA;
             AddNewPlayer(packet);
             clients.back().id = players.back().id;
-            std::cout << "ServerClient connected: " << client.id << '\n';
+            std::cout << "ServerClient connected: " << clients.back().id << '\n';
             // Tell the new client its ID
             // packet << static_cast<std::uint32_t>(clients.back().id);
 

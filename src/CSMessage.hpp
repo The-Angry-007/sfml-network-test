@@ -114,6 +114,10 @@ public:
 class CSMessageAddPlayer : public CSMessage
 {
     public:
+    CSMessageAddPlayer()
+    {
+        type = CSMessageType::ADD_PLAYER;
+    }
     Player player;
     void ToPacket(sf::Packet& packet)
     {
