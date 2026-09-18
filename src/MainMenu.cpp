@@ -57,6 +57,7 @@ void MainMenu::DisplayTitleScreen()
 		{
 			server = std::make_unique<Server>();
 			server->Start(5000);
+			server->Update();
 			Client* c = new Client(state->renderTarget,Player());
 			state = std::unique_ptr<Kosmic::State>(c);
 			sf::IpAddress ip = sf::IpAddress::getLocalAddress().value();

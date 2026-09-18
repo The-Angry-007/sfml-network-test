@@ -8,7 +8,7 @@ class Client : public Kosmic::State
 {
 public:
 float speed = 100.f;
-bool connected;
+bool connected = false;
 Player player;
 sf::TcpSocket socket; 
 std::vector<Player> otherPlayers;

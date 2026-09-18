@@ -161,7 +161,7 @@ bool Client::ConnectToServer(sf::IpAddress &ip, unsigned short port)
 
     socket.setBlocking(false);
     connected = true;
-
+    std::cout << "CONNECTED" << std::endl;
     return true;
 }
 

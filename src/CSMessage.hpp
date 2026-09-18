@@ -24,9 +24,9 @@ public:
     }
     virtual void FromPacket(sf::Packet &packet)
     {
-        uint8_t packetType;
-        packet >> packetType;
-        type = (CSMessageType)packetType;
+        // uint8_t packetType;
+        // packet >> packetType;
+        // type = (CSMessageType)packetType;
     }
 };
 

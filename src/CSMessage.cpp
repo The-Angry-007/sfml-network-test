@@ -19,6 +19,9 @@ CSMessage *CSMessageFromType(CSMessageType type)
     }else if (type == CSMessageType::REQUEST_STATUS)
     {
         msg = new CSMessageRequestStatus();
+    }else
+    {
+        msg = new CSMessage();
     }
     msg->type = type;
     return msg;
