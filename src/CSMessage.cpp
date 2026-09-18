@@ -19,6 +19,9 @@ CSMessage *CSMessageFromType(CSMessageType type)
     }else if (type == CSMessageType::REQUEST_STATUS)
     {
         msg = new CSMessageRequestStatus();
+    }else if (type == CSMessageType::ADD_PLAYER)
+    {
+        msg = new CSMessageAddPlayer();
     }else
     {
         msg = new CSMessage();

@@ -85,6 +85,12 @@ public:
         p.id = GetNextPlayerId();
         p.color = sf::Color(rand() % 255, rand() % 255, rand() % 255);
         p.position = {rand() % 300, rand() % 300};
+        auto* addMsg = new CSMessageAddPlayer();
+        addMsg->player = p;
+        sf::Packet addPacket;
+        addMsg->ToPacket(addPacket);
+        Broadcast(addPacket,{p.id});
+        delete addMsg;
         packet << p.id << p.color.r << p.color.g << p.color.b;
         packet << p.position.x << p.position.y;
         packet << (int)players.size();

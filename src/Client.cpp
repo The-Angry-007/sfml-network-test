@@ -97,6 +97,11 @@ void Client::ProcessPacket(sf::Packet &packet)
                 }
             }
         }
+    }else if (msg->type == CSMessageType::ADD_PLAYER)
+    {
+        CSMessageAddPlayer* msg2 = (CSMessageAddPlayer*)msg;
+        otherPlayers.push_back(std::move(msg2->player));
+        otherPlayers.back().UpdateRect();
     }
     else if (msg->type == CSMessageType::JOIN_DATA)
     {
@@ -138,6 +143,7 @@ void Client::LoadJoinData(sf::Packet &packet)
         Player player;
         packet >> player.id >> player.color.r >> player.color.g >> player.color.b;
         packet >> player.position.x >> player.position.y;
+        player.UpdateRect();
         otherPlayers.push_back(player);
     }
 }

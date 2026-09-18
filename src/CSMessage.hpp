@@ -1,5 +1,6 @@
 #pragma once
 #include "PCH.hpp"
+#include "Player.hpp"
 enum class CSMessageType : uint8_t
 {
     // REQUEST_JOIN_DATA = 0,       // client requests the info required upon joining
@@ -7,6 +8,7 @@ enum class CSMessageType : uint8_t
 
     SET_PLAYER_POSITION, // server tells clients to set a players position to this
     JOIN_DATA,           // the data a client needs upon joining
+    ADD_PLAYER,
 
     REQUEST_STATUS // returned to client upon sending a request telling them the status
 };
@@ -109,5 +111,20 @@ public:
     }
 };
 
+class CSMessageAddPlayer : public CSMessage
+{
+    public:
+    Player player;
+    void ToPacket(sf::Packet& packet)
+    {
+        packet << player.id << player.color.r << player.color.g << player.color.b;
+        packet << player.position.x << player.position.y;
+    }
+    void FromPacket(sf::Packet& packet)
+    {
+        packet >> player.id >> player.color.r >> player.color.g >> player.color.b;
+        packet >> player.position.x >> player.position.y;
+    }
+};
 
 CSMessage *CSMessageFromType(CSMessageType type);
