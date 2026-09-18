@@ -6,6 +6,7 @@
 #include "imgui/imgui.h"
 #include <fstream>
 #include <iostream>
+#include "Server.hpp"
 // #include "Civitron/EntityInfo.hpp"
 // a unique pointer to the window object; this is unique to prevent accidentally creating multiple windows
 std::unique_ptr<sf::RenderWindow> window;

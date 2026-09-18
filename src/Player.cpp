@@ -3,7 +3,7 @@
 Player::Player()
 {
     this->color = sf::Color::White;
-    size = 5.f;
+    size = 50.f;
     position = {0.f,0.f};
     UpdateRect();
 }

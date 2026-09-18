@@ -3,6 +3,7 @@
 #include "imgui/imgui.h"
 #include "State.hpp"
 #include "Client.hpp"
+#include "Server.hpp"
 MainMenu::MainMenu()
 {
 }
@@ -22,17 +23,11 @@ void MainMenu::DisplayTitleScreen()
 	ImGui::SetNextWindowSize(displaySize);
 
 	ImGui::Begin("MainMenu", nullptr, windowFlags);
-
-	if (ImGui::Button("Host"))
-	{
-		server = std::make_unique<Server>();
-		server->Start(5000);
-	}
-	if (ImGui::Button("Join"))
+	if (inJoinMenu)
 	{
 		char buf[64] = "127.0.0.1";
-
-		ImGui::InputText("Enter IP", buf, sizeof(buf));
+		ImGui::Text("Enter IP");
+		ImGui::InputText("##enter ip field", buf, sizeof(buf));
 
 		if (ImGui::Button("Connect"))
 		{
@@ -47,13 +42,31 @@ void MainMenu::DisplayTitleScreen()
 					(c << 8) |
 					d;
 
-				Client* c = new Client(state->renderTarget,Player());
-				c->socket.connect(sf::IpAddress(ip), 5000);
+				Client *c = new Client(state->renderTarget, Player());
+				sf::IpAddress ipAddress = sf::IpAddress(ip);
+				c->ConnectToServer(ipAddress,5000);
+				// c->socket.connect(sf::IpAddress(ip), 5000);
 				state = std::unique_ptr<Kosmic::State>(c);
 			}
 		}
 	}
+	else
+	{
 
+		if (ImGui::Button("Host"))
+		{
+			server = std::make_unique<Server>();
+			server->Start(5000);
+			Client* c = new Client(state->renderTarget,Player());
+			state = std::unique_ptr<Kosmic::State>(c);
+			sf::IpAddress ip = sf::IpAddress::getLocalAddress().value();
+			c->ConnectToServer(ip,5000);
+		}
+		if (ImGui::Button("Join"))
+		{
+			inJoinMenu = true;
+		}
+	}
 	ImGui::End();
 }
 

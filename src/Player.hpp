@@ -4,6 +4,7 @@
 class Player
 {
 public:
+uint64_t id;
 sf::Color color;
 sf::Vector2f position;
 float size;

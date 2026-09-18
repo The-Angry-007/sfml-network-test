@@ -3,7 +3,7 @@
 	class MainMenu : public Kosmic::State
 	{
 	public:
-
+		bool inJoinMenu = false;
 		MainMenu();
 		void DisplayTitleScreen();
 		void DerivedUpdate();
