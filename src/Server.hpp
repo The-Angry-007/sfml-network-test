@@ -119,10 +119,10 @@ public:
 
             client.socket.setBlocking(false);
 
-            clients.push_back(std::move(client));
             sf::Packet packet;
             packet << (uint8_t)CSMessageType::JOIN_DATA;
             AddNewPlayer(packet);
+            clients.push_back(std::move(client));
             clients.back().id = players.back().id;
             std::cout << "ServerClient connected: " << clients.back().id << '\n';
             // Tell the new client its ID
