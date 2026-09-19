@@ -2,6 +2,7 @@
 #include "CSMessage.hpp"
 #include "Server.hpp"
 #include "Main.hpp"
+#include "MainMenu.hpp"
 Client::Client(sf::RenderTarget *target, Player player)
 {
     this->renderTarget = target;
@@ -127,7 +128,7 @@ void Client::SendPacket(sf::Packet &packet)
 
     if (status == sf::Socket::Status::Disconnected)
     {
-        connected = false;
+        HandleServerDisconnect();
     }
     // TODO: check if server isnt null, if so then send directly to server
     // otherwise use socket to send to server through network
@@ -197,14 +198,28 @@ void Client::ReceivePackets()
         }
         else if (status == sf::Socket::Status::Disconnected)
         {
-            connected = false;
+            HandleServerDisconnect();
             break;
         }
         else
         {
             // Error
-            connected = false;
+            HandleServerDisconnect();
             break;
         }
     }
+    
+}
+
+void Client::HandleServerDisconnect()
+{
+    if (!connected)
+    {
+        return;
+    }
+    std::cout << "Disconnected from server" << std::endl;
+    connected = false;
+    socket.disconnect();
+
+    state = std::unique_ptr<Kosmic::State>(new MainMenu());
 }

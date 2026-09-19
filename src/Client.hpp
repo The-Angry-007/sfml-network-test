@@ -27,4 +27,5 @@ bool IsConnected()
 }
 
 void ReceivePackets();
+void HandleServerDisconnect();
 };
